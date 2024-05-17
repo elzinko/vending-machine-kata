@@ -37,3 +37,17 @@ npx gts init
 ```
 
 Finally, I decided to follow **clean architecture** concepts for the project so that all the domain can stay appart from external / technical concerns.
+
+## 2 - accept coins
+
+Here is the feature that was added : 
+
+```
+1 - Feature : Accept Coins
+
+As a vendor
+I want a vending machine that accepts coins
+So that I can collect money from the customer
+```
+
+Here I started with the Coin domain.

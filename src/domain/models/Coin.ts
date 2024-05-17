@@ -1,0 +1,6 @@
+export const Coin = {
+  NICKEL: {weight: 5, size: 21.21},
+  DIME: {weight: 2.268, size: 17.91},
+  QUARTER: {weight: 5.67, size: 24.26},
+  PENNY: {weight: 2.5, size: 19.05},
+} as const;
