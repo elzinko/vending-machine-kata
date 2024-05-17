@@ -1,0 +1,6 @@
+node_modules
+build
+<<<<<<< HEAD
+.DS_Store
+=======
+>>>>>>> 9b38eae (tech: add project settings customization)
