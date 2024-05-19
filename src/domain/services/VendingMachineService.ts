@@ -1,14 +1,14 @@
-import {CoinType, CoinValues} from '../models/Coin';
+import {AllowedCoins, CoinType, CoinValues} from '../models/Coin';
 
 export class VendingMachineService {
   private currentAmount = 0;
   private coinReturn: CoinType[] = [];
 
-  insertCoin(coin: keyof typeof CoinValues): void {
-    if (coin in CoinValues) {
-      this.currentAmount += CoinValues[coin];
-    } else {
+  insertCoin(coin: CoinType): void {
+    if (!Object.keys(CoinValues).includes(coin)) {
       this.coinReturn.push(coin);
+    } else {
+      this.currentAmount += CoinValues[coin as AllowedCoins];
     }
   }
 
@@ -17,6 +17,6 @@ export class VendingMachineService {
   }
 
   getCoinReturn(): CoinType[] {
-    throw new Error('Method not implemented.');
+    return this.coinReturn;
   }
 }

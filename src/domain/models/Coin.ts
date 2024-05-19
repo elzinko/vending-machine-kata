@@ -12,3 +12,5 @@ export const CoinValues = {
   DIME: 10,
   QUARTER: 25,
 } as const;
+
+export type AllowedCoins = keyof typeof CoinValues;
