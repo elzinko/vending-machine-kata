@@ -51,3 +51,7 @@ So that I can collect money from the customer
 ```
 
 Here I started with the Coin domain.
+Then I started to define [VendingMachineService](./src/domain/services/VendingMachineService.ts) using TDD.
+I had to create CoinValue and CoinType so that I could create better interface.
+I also used jest as a framework for unit test for speed dev purpose.
+I put tests inside a dedicated folder for separation of concern purpose.
