@@ -5,10 +5,10 @@ export class VendingMachineService {
   private coinReturn: CoinType[] = [];
 
   insertCoin(coin: CoinType): void {
-    if (!Object.keys(CoinValues).includes(coin)) {
-      this.coinReturn.push(coin);
-    } else {
+    if (coin in CoinValues) {
       this.currentAmount += CoinValues[coin as AllowedCoins];
+    } else {
+      this.coinReturn.push(coin);
     }
   }
 
