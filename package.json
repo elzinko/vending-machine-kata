@@ -4,12 +4,12 @@
     "clean": "gts clean",
     "compile": "tsc",
     "dev": "tsc -w",
+    "start": "node build/src/cli/index.js",
     "test": "jest",
     "fix": "gts fix",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
-    "posttest": "npm run lint",
-    "start": "node build/src/cli/index.js"
+    "posttest": "npm run lint"
   },
   "dependencies": {
     "readline-sync": "^1.4.10"

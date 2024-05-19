@@ -46,7 +46,7 @@ function handleUserInput(choice: number) {
 
 let running = true;
 
-console.log('\nVending Machine');
+console.log('Vending Machine\n');
 
 while (running) {
   console.log('Display: ' + displayAdapter.getDisplay());

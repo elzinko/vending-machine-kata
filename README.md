@@ -50,8 +50,16 @@ I want a vending machine that accepts coins
 So that I can collect money from the customer
 ```
 
-Here I started with the Coin domain.
-Then I started to define [VendingMachineService](./src/domain/services/VendingMachineService.ts) using TDD.
-I had to create CoinValue and CoinType so that I could create better interface.
-I also used jest as a framework for unit test for speed dev purpose.
-I put tests inside a dedicated folder for separation of concern purpose.
+- I defined the [Coin](./src/domain/models/Coin.ts) domain model.
+- I defined [VendingMachineService](./src/domain/services/VendingMachineService.ts) using TDD.
+- I had to define [CoinValue](./src/domain/models/Coin.ts) and [CoinType](./src/domain/models/Coin.ts).
+- I used [jest](https://jestjs.io/fr/) as a framework for unit test for sake of dev speed.
+I - put tests inside a dedicated folder for separation of concern purpose. First I tried inside each layer but I changed my mind.
+- I created an interface for insertCoin use case, so that the adapters could be aware of it for implementation.
+- I created a simple command cli.
+
+You can start cli using :
+```sh
+npm run compile && npm run start
+```
+
