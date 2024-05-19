@@ -1,4 +1,4 @@
-import {CoinValue} from '../../../src/domain/models/Coin';
+import {CoinValues} from '../../../src/domain/models/Coin';
 import {VendingMachineService} from '../../../src/domain/services/VendingMachineService';
 
 describe('VendingMachineService', () => {
@@ -6,6 +6,6 @@ describe('VendingMachineService', () => {
 
   test('should insert a dime and update the current amount', () => {
     vendingMachine.insertCoin('DIME');
-    expect(vendingMachine.getCurrentAmount()).toBe(CoinValue.DIME);
+    expect(vendingMachine.getCurrentAmount()).toBe(CoinValues.DIME);
   });
 });

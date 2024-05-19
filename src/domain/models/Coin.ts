@@ -7,7 +7,7 @@ export const Coin = {
 
 export type CoinType = keyof typeof Coin;
 
-export const CoinValue = {
+export const CoinValues = {
   NICKEL: 5,
   DIME: 10,
   QUARTER: 25,
