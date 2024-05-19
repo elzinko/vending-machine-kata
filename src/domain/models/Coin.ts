@@ -4,3 +4,13 @@ export const Coin = {
   QUARTER: {weight: 5.67, size: 24.26},
   PENNY: {weight: 2.5, size: 19.05},
 } as const;
+
+export type CoinType = keyof typeof Coin;
+
+export const CoinValues = {
+  NICKEL: 5,
+  DIME: 10,
+  QUARTER: 25,
+} as const;
+
+export type AllowedCoins = keyof typeof CoinValues;
