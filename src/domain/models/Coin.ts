@@ -11,5 +11,4 @@ export const CoinValues = {
   NICKEL: 5,
   DIME: 10,
   QUARTER: 25,
-  PENNY: 1,
 } as const;
