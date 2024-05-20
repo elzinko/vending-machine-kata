@@ -3,7 +3,6 @@ import {InsertCoin} from '../usecases/InsertCoin';
 import {VendingMachineAdapter} from '../adapters/VendingMachineAdapter';
 import * as readlineSync from 'readline-sync';
 import {SelectProduct} from '../usecases/SelectProduct';
-import { DisplayStateMachine } from '../domain/entities/DisplayStateMachine';
 
 const vendingMachineService = new VendingMachineService();
 const insertCoinUseCase = new InsertCoin(vendingMachineService);
