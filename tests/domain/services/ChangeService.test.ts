@@ -40,3 +40,22 @@ describe('ChangeService', () => {
     expect(result).toEqual(expected);
   });
 });
+test('should return 0 when no coins are provided', () => {
+  const coins: CoinType[] = [];
+  const result = ChangeService.computeCoinsAmount(coins);
+  expect(result).toBe(0);
+});
+
+test('should return the correct sum of coin values', () => {
+  const coins: CoinType[] = ['QUARTER', 'DIME', 'NICKEL'];
+  const result = ChangeService.computeCoinsAmount(coins);
+  const expected = CoinValues.QUARTER + CoinValues.DIME + CoinValues.NICKEL;
+  expect(result).toBe(expected);
+});
+
+test('should return the correct sum when duplicate coins are provided', () => {
+  const coins: CoinType[] = ['QUARTER', 'QUARTER', 'DIME', 'DIME'];
+  const result = ChangeService.computeCoinsAmount(coins);
+  const expected = 2 * CoinValues.QUARTER + 2 * CoinValues.DIME;
+  expect(result).toBe(expected);
+});

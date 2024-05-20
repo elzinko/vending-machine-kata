@@ -54,4 +54,11 @@ export class ChangeService {
       throw new Error('Amount must be a multiple of the smallest coin');
     }
   }
+
+  static computeCoinsAmount(coins: CoinType[]): number {
+    return coins.reduce(
+      (total, coin) => total + CoinValues[coin as keyof typeof CoinValues],
+      0
+    );
+  }
 }
