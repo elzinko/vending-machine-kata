@@ -1,7 +1,19 @@
 import {VendingMachineInterface} from '../../interfaces/VendingMachineInterface';
-import {DisplayStateMachine} from '../entities/DisplayStateMachine';
-import {AllowedCoins, CoinType, CoinValues} from '../models/Coin';
+import {
+  DISPLAY_AMOUNT_STATE,
+  DisplayStateMachine,
+  INSERT_COIN_STATE,
+  PRICE_STATE,
+  THANK_YOU_STATE,
+} from '../entities/DisplayStateMachine';
+import {
+  AllowedCoins,
+  CoinType,
+  CoinValues,
+  allowedCoinsTypes as ALLOWED_COIN_TYPES,
+} from '../models/Coin';
 import {ProductPrices, ProductType} from '../models/Product';
+import {ChangeService} from './ChangeService';
 
 export const INSERT_COIN_MESSAGE = 'INSERT COIN';
 export const THANK_YOU_MESSAGE = 'THANK YOU';
@@ -9,13 +21,13 @@ export const THANK_YOU_MESSAGE = 'THANK YOU';
 export class VendingMachineService implements VendingMachineInterface {
   private balance = 0;
   private coinReturn: CoinType[] = [];
-  private selectedProduct?: ProductType;
   private displayStateMachine: DisplayStateMachine = new DisplayStateMachine();
+  private selectedProduct?: ProductType;
 
   insertCoin(coin: CoinType): void {
     if (coin in CoinValues) {
       this.balance += CoinValues[coin as AllowedCoins];
-      this.displayStateMachine.setState('DISPLAY_AMOUNT');
+      this.displayStateMachine.setState(DISPLAY_AMOUNT_STATE);
     } else {
       this.coinReturn.push(coin);
     }
@@ -25,25 +37,30 @@ export class VendingMachineService implements VendingMachineInterface {
     this.selectedProduct = product;
     if (this.balance >= ProductPrices[product]) {
       this.balance -= ProductPrices[product];
-      this.displayStateMachine.setState('THANK_YOU');
+      this.coinReturn = ChangeService.makeChange(
+        this.balance,
+        ALLOWED_COIN_TYPES
+      );
+      this.balance = 0;
+      this.displayStateMachine.setState(THANK_YOU_STATE);
     } else {
-      this.displayStateMachine.setState('PRICE');
+      this.displayStateMachine.setState(PRICE_STATE);
     }
   }
 
   getDisplayMessage(): string {
     const price =
-      this.displayStateMachine.getState() === 'PRICE'
-        ? this.getProductPrice()
+      this.displayStateMachine.getState() === PRICE_STATE
+        ? this.getSelectedProductPrice()
         : undefined;
     return this.displayStateMachine.getMessage(this.balance, price);
   }
 
   resetDisplay(): void {
     if (this.balance > 0) {
-      this.displayStateMachine.setState('DISPLAY_AMOUNT');
+      this.displayStateMachine.setState(DISPLAY_AMOUNT_STATE);
     } else {
-      this.displayStateMachine.setState('INSERT_COIN');
+      this.displayStateMachine.setState(INSERT_COIN_STATE);
     }
     this.selectedProduct = undefined;
   }
@@ -61,7 +78,7 @@ export class VendingMachineService implements VendingMachineInterface {
     this.resetDisplay();
   }
 
-  private getProductPrice(): number | undefined {
+  private getSelectedProductPrice(): number | undefined {
     if (this.selectedProduct) {
       return ProductPrices[this.selectedProduct];
     }

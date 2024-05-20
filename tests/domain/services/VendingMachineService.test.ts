@@ -37,4 +37,13 @@ describe('VendingMachineService', () => {
     vendingMachine.selectProduct('COLA');
     expect(vendingMachine.getDisplayMessage()).toBe('PRICE $1.00');
   });
+
+  test('should return correct change when amount inserted is greater than product price', () => {
+    vendingMachine.insertCoin('QUARTER');
+    vendingMachine.insertCoin('QUARTER');
+    vendingMachine.insertCoin('QUARTER');
+    vendingMachine.selectProduct('CHIPS');
+    expect(vendingMachine.getCoinReturn()).toEqual(['QUARTER']);
+    expect(vendingMachine.getCurrentBalance()).toBe(0);
+  });
 });

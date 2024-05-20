@@ -14,3 +14,5 @@ export const CoinValues = {
 } as const;
 
 export type AllowedCoins = keyof typeof CoinValues;
+
+export const allowedCoinsTypes = Object.keys(CoinValues) as CoinType[];
