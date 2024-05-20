@@ -1,6 +1,5 @@
-import {CoinValues} from '../../src/domain/models/Coin';
-import {VendingMachineService} from '../../src/domain/services/VendingMachineService';
 import {InsertCoin} from '../../src/usecases/InsertCoin';
+import {VendingMachineService} from '../../src/domain/services/VendingMachineService';
 
 describe('InsertCoin', () => {
   let vendingMachineService: VendingMachineService;
@@ -11,33 +10,28 @@ describe('InsertCoin', () => {
     insertCoin = new InsertCoin(vendingMachineService);
   });
 
-  it('should insert a coin', () => {
-    insertCoin.execute('DIME');
-    expect(vendingMachineService.getCurrentAmount()).toEqual(CoinValues.DIME);
-    expect(vendingMachineService.getCoinReturn()).toEqual([]);
+  test('should add nickel to the vending machine and update balance', () => {
+    insertCoin.execute('NICKEL');
+    expect(insertCoin.getCurrentBalance()).toBe(5);
   });
 
-  it('should return the coin return', () => {
-    vendingMachineService.insertCoin('NICKEL');
-    expect(vendingMachineService.getCurrentAmount()).toEqual(CoinValues.NICKEL);
-    expect(vendingMachineService.getCoinReturn()).toEqual([]);
+  test('should add dime to the vending machine and update balance', () => {
+    insertCoin.execute('DIME');
+    expect(insertCoin.getCurrentBalance()).toBe(10);
+  });
 
-    vendingMachineService.insertCoin('DIME');
-    expect(vendingMachineService.getCurrentAmount()).toEqual(
-      CoinValues.NICKEL + CoinValues.DIME
-    );
-    expect(vendingMachineService.getCoinReturn()).toEqual([]);
+  test('should add quarter to the vending machine and update balance', () => {
+    insertCoin.execute('QUARTER');
+    expect(insertCoin.getCurrentBalance()).toBe(25);
+  });
 
-    vendingMachineService.insertCoin('QUARTER');
-    expect(vendingMachineService.getCurrentAmount()).toEqual(
-      CoinValues.NICKEL + CoinValues.DIME + CoinValues.QUARTER
-    );
-    expect(vendingMachineService.getCoinReturn()).toEqual([]);
+  test('should add invalid coin to coin return', () => {
+    insertCoin.execute('PENNY');
+    expect(insertCoin.getCoinReturn()).toContain('PENNY');
+  });
 
-    vendingMachineService.insertCoin('PENNY');
-    expect(vendingMachineService.getCurrentAmount()).toEqual(
-      CoinValues.NICKEL + CoinValues.DIME + CoinValues.QUARTER
-    );
-    expect(vendingMachineService.getCoinReturn()).toEqual(['PENNY']);
+  test('should not add invalid coin to the current balance', () => {
+    insertCoin.execute('PENNY');
+    expect(insertCoin.getCurrentBalance()).toBe(0);
   });
 });

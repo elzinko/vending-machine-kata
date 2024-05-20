@@ -1,16 +1,13 @@
-import {InsertCoinInterface} from '../interfaces/InsertCoinInterface';
-import {CurrencyConversionService} from '../domain/services/CurrencyConversionService';
+import {VendingMachineInterface} from '../interfaces/VendingMachineInterface';
 
 export class DisplayAdapter {
-  constructor(private insertCoin: InsertCoinInterface) {}
+  constructor(private vendingMachineService: VendingMachineInterface) {}
 
   getDisplay(): string {
-    const amountInCents = this.insertCoin.getCurrentAmount();
-    if (amountInCents === 0) {
-      return 'INSERT COIN';
-    }
-    const amountInDollars =
-      CurrencyConversionService.centsToDollars(amountInCents);
-    return `$${amountInDollars}`;
+    return this.vendingMachineService.getDisplayMessage();
+  }
+
+  resetDisplay(): void {
+    this.vendingMachineService.resetDisplay();
   }
 }

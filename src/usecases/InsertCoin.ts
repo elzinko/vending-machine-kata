@@ -9,9 +9,10 @@ export class InsertCoin implements InsertCoinInterface {
     this.vendingMachineService.insertCoin(coin);
   }
 
-  getCurrentAmount(): number {
-    return this.vendingMachineService.getCurrentAmount();
+  getCurrentBalance(): number {
+    return this.vendingMachineService.getCurrentBalance();
   }
+
   getCoinReturn(): CoinType[] {
     return this.vendingMachineService.getCoinReturn();
   }
