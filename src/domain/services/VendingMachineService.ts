@@ -10,7 +10,7 @@ import {
   AllowedCoins,
   CoinType,
   CoinValues,
-  allowedCoinsTypes as ALLOWED_COIN_TYPES,
+  allowedCoinsTypes,
 } from '../models/Coin';
 import {ProductPrices, ProductType} from '../models/Product';
 import {ChangeService} from './ChangeService';
@@ -39,7 +39,7 @@ export class VendingMachineService implements VendingMachineInterface {
       this.balance -= ProductPrices[product];
       this.coinReturn = ChangeService.makeChange(
         this.balance,
-        ALLOWED_COIN_TYPES
+        allowedCoinsTypes
       );
       this.balance = 0;
       this.displayStateMachine.setState(THANK_YOU_STATE);

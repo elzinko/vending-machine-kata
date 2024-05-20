@@ -18,7 +18,7 @@ describe('DisplayAdapter', () => {
   test('should display amount after inserting a nickel', () => {
     vendingMachineService.insertCoin('NICKEL');
     const message = displayAdapter.getDisplay();
-    expect(message).toBe('$0.05');
+    expect(message).toBe('BALANCE $0.05');
   });
 
   test('should display THANK YOU when product is selected with enough money', () => {
@@ -48,6 +48,6 @@ describe('DisplayAdapter', () => {
     vendingMachineService.insertCoin('QUARTER');
     displayAdapter.resetDisplay();
     const message = displayAdapter.getDisplay();
-    expect(message).toBe('$0.25');
+    expect(message).toBe('BALANCE $0.25');
   });
 });

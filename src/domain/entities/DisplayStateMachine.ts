@@ -1,4 +1,6 @@
+import {CoinType} from '../models/Coin';
 import {DisplayState} from '../models/DisplayState';
+import {ChangeService} from '../services/ChangeService';
 
 export const INSERT_COIN_STATE = 'INSERT_COIN' as DisplayState;
 export const DISPLAY_AMOUNT_STATE = 'DISPLAY_AMOUNT' as DisplayState;
@@ -33,14 +35,25 @@ export class DisplayStateMachine {
       case INSERT_COIN_STATE:
         return 'INSERT COIN';
       case DISPLAY_AMOUNT_STATE:
-        return `$${(currentBalance / 100).toFixed(2)}`;
-      case THANK_YOU_STATE:
+        return `BALANCE $${(currentBalance / 100).toFixed(2)}`;
+      case THANK_YOU_STATE: {
         return 'THANK YOU';
+      }
       case PRICE_STATE:
-      case 'PRICE':
         return `PRICE $${(price! / 100).toFixed(2)}`;
       default:
         return 'INSERT COIN';
+    }
+  }
+
+  getCurrentCoinReturnMessage(coins: CoinType[]): string {
+    switch (this.state) {
+      case PRICE_STATE:
+        return `RETURN COIN $${(
+          ChangeService.computeCoinsAmount(coins) / 100
+        ).toFixed(2)}`;
+      default:
+        return '';
     }
   }
 }

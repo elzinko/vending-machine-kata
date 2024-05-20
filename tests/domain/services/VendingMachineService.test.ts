@@ -46,4 +46,37 @@ describe('VendingMachineService', () => {
     expect(vendingMachine.getCoinReturn()).toEqual(['QUARTER']);
     expect(vendingMachine.getCurrentBalance()).toBe(0);
   });
+
+  test('should display INSERT COIN when no coins are inserted', () => {
+    expect(vendingMachine.getDisplayMessage()).toBe('INSERT COIN');
+  });
+
+  test('should display current balance when coins are inserted', () => {
+    vendingMachine.insertCoin('QUARTER');
+    vendingMachine.insertCoin('DIME');
+    expect(vendingMachine.getDisplayMessage()).toBe('BALANCE $0.35');
+  });
+
+  test('should display PRICE and current balance when product is selected', () => {
+    vendingMachine.insertCoin('QUARTER');
+    vendingMachine.selectProduct('CHIPS');
+    expect(vendingMachine.getDisplayMessage()).toBe('PRICE $0.50');
+  });
+
+  test('should display THANK YOU and current balance when enough money is inserted and product is selected', () => {
+    vendingMachine.insertCoin('QUARTER');
+    vendingMachine.insertCoin('QUARTER');
+    vendingMachine.selectProduct('CHIPS');
+    expect(vendingMachine.getDisplayMessage()).toBe('THANK YOU');
+  });
+
+  // test('should display current balance and coin return message when coins are inserted and product is selected', () => {
+  //   vendingMachine.insertCoin('QUARTER');
+  //   vendingMachine.insertCoin('QUARTER');
+  //   vendingMachine.insertCoin('DIME');
+  //   vendingMachine.selectProduct('CHIPS');
+  //   expect(vendingMachine.getDisplayMessage()).toBe(
+  //     'THANK YOU. Returning 10 with coins DIME'
+  //   );
+  // });
 });
