@@ -1,47 +1,40 @@
-import {CoinValues} from '../../../src/domain/models/Coin';
 import {VendingMachineService} from '../../../src/domain/services/VendingMachineService';
-import {InsertCoin} from '../../../src/usecases/InsertCoin';
 
-describe('InsertCoin', () => {
+describe('VendingMachineService', () => {
   let vendingMachine: VendingMachineService;
-  let insertCoin: InsertCoin;
 
   beforeEach(() => {
     vendingMachine = new VendingMachineService();
-    insertCoin = new InsertCoin(vendingMachine);
   });
 
-  test('should insert a nickel and update the current amount', () => {
-    insertCoin.execute('NICKEL');
-    expect(vendingMachine.getCurrentAmount()).toBe(CoinValues.NICKEL);
-    expect(vendingMachine.getCoinReturn()).toEqual([]);
-  });
-
-  test('should insert a dime and update the current amount', () => {
-    insertCoin.execute('DIME');
-    expect(vendingMachine.getCurrentAmount()).toBe(CoinValues.DIME);
-    expect(vendingMachine.getCoinReturn()).toEqual([]);
-  });
-
-  test('should insert a quarter and update the current amount', () => {
-    insertCoin.execute('QUARTER');
-    expect(vendingMachine.getCurrentAmount()).toBe(CoinValues.QUARTER);
-    expect(vendingMachine.getCoinReturn()).toEqual([]);
-  });
-
-  test('should insert a penny and return the coin', () => {
-    insertCoin.execute('PENNY');
-    expect(vendingMachine.getCoinReturn()).toEqual(['PENNY']);
-  });
-
-  test('should return the coin return', () => {
-    vendingMachine.insertCoin('NICKEL');
-    vendingMachine.insertCoin('DIME');
+  test('should update current balance in cents when adding value', () => {
     vendingMachine.insertCoin('QUARTER');
+    expect(vendingMachine.getCurrentBalance()).toBe(25);
+  });
+
+  test('should add coin to coin return', () => {
     vendingMachine.insertCoin('PENNY');
-    expect(vendingMachine.getCurrentAmount()).toBe(
-      CoinValues.NICKEL + CoinValues.DIME + CoinValues.QUARTER
-    );
-    expect(vendingMachine.getCoinReturn()).toEqual(['PENNY']);
+    expect(vendingMachine.getCoinReturn()).toContain('PENNY');
+  });
+
+  test('should reset current balance to zero', () => {
+    vendingMachine.insertCoin('QUARTER');
+    vendingMachine.reset();
+    expect(vendingMachine.getCurrentBalance()).toBe(0);
+  });
+
+  test('should display THANK YOU when enough money is inserted and product is selected', () => {
+    vendingMachine.insertCoin('QUARTER');
+    vendingMachine.insertCoin('QUARTER');
+    vendingMachine.selectProduct('CHIPS');
+    expect(vendingMachine.getDisplayMessage()).toBe('THANK YOU');
+    vendingMachine.resetDisplay();
+    expect(vendingMachine.getDisplayMessage()).toBe('INSERT COIN');
+  });
+
+  test('should display PRICE when not enough money is inserted for a product', () => {
+    vendingMachine.insertCoin('DIME');
+    vendingMachine.selectProduct('COLA');
+    expect(vendingMachine.getDisplayMessage()).toBe('PRICE $1.00');
   });
 });

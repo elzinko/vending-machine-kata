@@ -43,8 +43,6 @@ Finally, I decided to follow **clean architecture** concepts for the project so 
 Here is the feature that was added : 
 
 ```
-1 - Feature : Accept Coins
-
 As a vendor
 I want a vending machine that accepts coins
 So that I can collect money from the customer
@@ -62,4 +60,14 @@ You can start cli using :
 ```sh
 npm run compile && npm run start
 ```
+
+## 3 - select product
+
+Here is the feature to add : 
+```
+As a vendor
+I want customers to select products
+So that I can give them an incentive to put money in the machine
+```
+
 

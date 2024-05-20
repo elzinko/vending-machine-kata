@@ -2,6 +2,6 @@ import {CoinType} from '../domain/models/Coin';
 
 export interface InsertCoinInterface {
   execute(coin: CoinType): void;
-  getCurrentAmount(): number;
+  getCurrentBalance(): number;
   getCoinReturn(): CoinType[];
 }
