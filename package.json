@@ -18,6 +18,7 @@
     "start:cli": "node build/src/cli/index.js",
     "start:app": "node build/src/main.js",
     "test": "jest",
+    "test:bdd": "cucumber-js",
     "fix": "gts fix",
     "coverage": "jest --coverage",
     "prepare": "npm run compile",
@@ -29,6 +30,7 @@
     "readline-sync": "^1.4.10"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "^10.7.0",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.5",
@@ -36,6 +38,7 @@
     "gts": "^5.3.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
     "typescript": "~5.1.3"
   }
 }
