@@ -1,15 +1,23 @@
 # Vending Machine state diagram
 
-## Feature : [Accept Coins](https://github.com/guyroyse/vending-machine-kata?tab=readme-ov-file#accept-coins)
+Features : 
+- [Accept Coins](https://github.com/guyroyse/vending-machine-kata?tab=readme-ov-file#accept-coins)
+- [Select Product](https://github.com/guyroyse/vending-machine-kata?tab=readme-ov-file#select-product)
 
 ```mermaid
 stateDiagram-v2
-    [*] --> IDLE
-    IDLE --> COIN_INSERTED : Insert Valid Coin
-    IDLE --> IDLE : Insert Invalid Coin
-    COIN_INSERTED --> COIN_INSERTED : Insert Valid Coin
-    COIN_INSERTED --> IDLE : Insert Invalid Coin
+  [*] --> IDLE
+  state isValidCoin <<choice>> 
+  state hasEnoughtMoney <<choice>>
 
+  IDLE --> isValidCoin: insert coin
+  COIN_INSERTED --> isValidCoin: insert coin
+
+  isValidCoin --> IDLE: if coin is invalid
+  isValidCoin --> COIN_INSERTED : if coin valid
+
+  COIN_INSERTED --> hasEnoughtMoney: select product
+  hasEnoughtMoney --> PRODUCT_SELECTED: enought money
+  hasEnoughtMoney --> COIN_INSERTED: not enought money
 ```
 
-## Feature 
