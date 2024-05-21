@@ -13,6 +13,7 @@
     "start": "node build/src/cli/index.js",
     "test": "jest",
     "fix": "gts fix",
+    "coverage": "jest --coverage",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
     "posttest": "npm run lint"
