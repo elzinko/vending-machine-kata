@@ -69,3 +69,15 @@ Feature is defined [here](https://github.com/guyroyse/vending-machine-kata?tab=r
 
 Feature is defined [here](https://github.com/guyroyse/vending-machine-kata?tab=readme-ov-file#make-change)
 - I started to create a new change service in the domain
+
+## Improvments
+
+Create list of action 
+
+- [x] improve documentation state diagrams
+- [ ] forgot BDD which was the main purpose if the kata 8/
+- [ ] create a structured response using DTO
+- [ ] create error code for client
+- [ ] add rest doc
+- [ ] better messages message separation
+- [ ] create a vuejs 3 client
