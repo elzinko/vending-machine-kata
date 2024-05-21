@@ -27,7 +27,9 @@ describe('VendingMachineService', () => {
     vendingMachine.insertCoin('QUARTER');
     vendingMachine.insertCoin('QUARTER');
     vendingMachine.selectProduct('CHIPS');
-    expect(vendingMachine.getDisplayMessage()).toBe('THANK YOU');
+    expect(vendingMachine.getDisplayMessage()).toBe(
+      'THANK YOU. Coin return : $0.00'
+    );
     vendingMachine.resetDisplay();
     expect(vendingMachine.getDisplayMessage()).toBe('INSERT COIN');
   });
@@ -67,16 +69,18 @@ describe('VendingMachineService', () => {
     vendingMachine.insertCoin('QUARTER');
     vendingMachine.insertCoin('QUARTER');
     vendingMachine.selectProduct('CHIPS');
-    expect(vendingMachine.getDisplayMessage()).toBe('THANK YOU');
+    expect(vendingMachine.getDisplayMessage()).toBe(
+      'THANK YOU. Coin return : $0.00'
+    );
   });
 
-  // test('should display current balance and coin return message when coins are inserted and product is selected', () => {
-  //   vendingMachine.insertCoin('QUARTER');
-  //   vendingMachine.insertCoin('QUARTER');
-  //   vendingMachine.insertCoin('DIME');
-  //   vendingMachine.selectProduct('CHIPS');
-  //   expect(vendingMachine.getDisplayMessage()).toBe(
-  //     'THANK YOU. Returning 10 with coins DIME'
-  //   );
-  // });
+  test('should display current balance and coin return message when coins are inserted and product is selected', () => {
+    vendingMachine.insertCoin('QUARTER');
+    vendingMachine.insertCoin('QUARTER');
+    vendingMachine.insertCoin('DIME');
+    vendingMachine.selectProduct('CHIPS');
+    expect(vendingMachine.getDisplayMessage()).toBe(
+      'THANK YOU. Coin return : $0.10 (DIME)'
+    );
+  });
 });

@@ -15,27 +15,27 @@ describe('SelectProduct', () => {
     vendingMachineService.insertCoin('QUARTER');
     vendingMachineService.insertCoin('QUARTER');
     vendingMachineService.insertCoin('QUARTER');
-    selectProduct.execute('COLA');
-    expect(vendingMachineService.getDisplayMessage()).toBe('THANK YOU');
+    const result = selectProduct.execute('COLA');
+    expect(result).toBe('THANK YOU. Coin return : $0.00');
   });
 
   test('should display PRICE when not enough money is inserted for COLA', () => {
     vendingMachineService.insertCoin('DIME');
-    selectProduct.execute('COLA');
-    expect(vendingMachineService.getDisplayMessage()).toBe('PRICE $1.00');
+    const result = selectProduct.execute('COLA');
+    expect(result).toBe('PRICE $1.00');
   });
 
   test('should display THANK YOU when enough money is inserted for CHIPS', () => {
     vendingMachineService.insertCoin('QUARTER');
     vendingMachineService.insertCoin('QUARTER');
-    selectProduct.execute('CHIPS');
-    expect(vendingMachineService.getDisplayMessage()).toBe('THANK YOU');
+    const result = selectProduct.execute('CHIPS');
+    expect(result).toBe('THANK YOU. Coin return : $0.00');
   });
 
   test('should display PRICE when not enough money is inserted for CHIPS', () => {
     vendingMachineService.insertCoin('NICKEL');
-    selectProduct.execute('CHIPS');
-    expect(vendingMachineService.getDisplayMessage()).toBe('PRICE $0.50');
+    const result = selectProduct.execute('CHIPS');
+    expect(result).toBe('PRICE $0.50');
   });
 
   test('should display THANK YOU when enough money is inserted for CANDY', () => {
@@ -43,13 +43,25 @@ describe('SelectProduct', () => {
     vendingMachineService.insertCoin('QUARTER');
     vendingMachineService.insertCoin('DIME');
     vendingMachineService.insertCoin('NICKEL');
-    selectProduct.execute('CANDY');
-    expect(vendingMachineService.getDisplayMessage()).toBe('THANK YOU');
+    const result = selectProduct.execute('CANDY');
+    expect(result).toBe('THANK YOU. Coin return : $0.00');
   });
 
   test('should display PRICE when not enough money is inserted for CANDY', () => {
     vendingMachineService.insertCoin('DIME');
-    selectProduct.execute('CANDY');
-    expect(vendingMachineService.getDisplayMessage()).toBe('PRICE $0.65');
+    const result = selectProduct.execute('CANDY');
+    expect(result).toBe('PRICE $0.65');
+  });
+
+  test('should add coin return info to the display message when too much money is inserted', () => {
+    vendingMachineService.insertCoin('QUARTER');
+    vendingMachineService.insertCoin('QUARTER');
+    vendingMachineService.insertCoin('DIME');
+    vendingMachineService.insertCoin('DIME');
+    vendingMachineService.insertCoin('DIME');
+    vendingMachineService.insertCoin('NICKEL');
+    vendingMachineService.insertCoin('NICKEL');
+    const result = selectProduct.execute('CANDY');
+    expect(result).toBe('THANK YOU. Coin return : $0.25 (QUARTER)');
   });
 });

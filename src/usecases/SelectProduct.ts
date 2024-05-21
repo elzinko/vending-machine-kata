@@ -5,15 +5,7 @@ import {SelectProductInterface} from '../interfaces/SelectProductInterface';
 export class SelectProduct implements SelectProductInterface {
   constructor(private vendingMachineService: VendingMachineService) {}
 
-  execute(product: ProductType): void {
-    this.vendingMachineService.selectProduct(product);
-  }
-
-  getDisplayMessage(): string {
-    return this.vendingMachineService.getDisplayMessage();
-  }
-
-  resetDisplay(): void {
-    this.vendingMachineService.resetDisplay();
+  execute(product: ProductType): string {
+    return this.vendingMachineService.selectProduct(product);
   }
 }

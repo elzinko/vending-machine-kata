@@ -1,21 +1,22 @@
 import {CoinType} from '../models/Coin';
-import {DisplayState} from '../models/DisplayState';
+import {VendingMachineState} from '../models/VendingMachineState';
 import {ChangeService} from '../services/ChangeService';
 
-export const INSERT_COIN_STATE = 'INSERT_COIN' as DisplayState;
-export const DISPLAY_AMOUNT_STATE = 'DISPLAY_AMOUNT' as DisplayState;
-export const THANK_YOU_STATE = 'THANK_YOU' as DisplayState;
-export const PRICE_STATE = 'PRICE' as DisplayState;
+export const IDLE_STATE = 'IDLE' as VendingMachineState;
+export const INSERT_COIN_STATE = 'INSERT_COIN' as VendingMachineState;
+export const DISPLAY_BALANCE_STATE = 'DISPLAY_AMOUNT' as VendingMachineState;
+export const SELECT_PRODUCT_STATE = 'SELECT_PRODUCT' as VendingMachineState;
+export const SHOW_PRICE_STATE = 'SHOW_PRICE' as VendingMachineState;
 
 export class DisplayStateMachine {
-  private state: DisplayState = INSERT_COIN_STATE.toString() as DisplayState;
+  private state: VendingMachineState =
+    IDLE_STATE.toString() as VendingMachineState;
 
-  // TODO: should thinks about necessity to expose state setter. Maybe getMessage could get current state from current vending machine state instead
-  setState(newState: DisplayState): void {
+  setState(newState: VendingMachineState): void {
     this.state = newState;
   }
 
-  getState(): DisplayState {
+  getState(): VendingMachineState {
     return this.state;
   }
 
@@ -30,30 +31,34 @@ export class DisplayStateMachine {
    * @param price the price of the product in cents
    * @returns the message to display on the vending machine
    */
-  getMessage(currentBalance: number, price?: number): string {
+  getMessage(
+    currentBalance: number,
+    coinReturn: CoinType[],
+    productPrice?: number
+  ): string {
     switch (this.state) {
       case INSERT_COIN_STATE:
         return 'INSERT COIN';
-      case DISPLAY_AMOUNT_STATE:
+      case DISPLAY_BALANCE_STATE:
         return `BALANCE $${(currentBalance / 100).toFixed(2)}`;
-      case THANK_YOU_STATE: {
-        return 'THANK YOU';
+      case SELECT_PRODUCT_STATE: {
+        const returnedCoinsMessage = this.getCoinsAmountString(
+          coinReturn || []
+        );
+        const coinReturnMessage =
+          coinReturn.length > 0 ? ' (' + coinReturn.join(',') + ')' : '';
+        return `THANK YOU. Coin return : $${returnedCoinsMessage}${coinReturnMessage}`;
       }
-      case PRICE_STATE:
-        return `PRICE $${(price! / 100).toFixed(2)}`;
+      case SHOW_PRICE_STATE: {
+        const formatedAmount = (productPrice! / 100).toFixed(2);
+        return `PRICE $${formatedAmount}`;
+      }
       default:
         return 'INSERT COIN';
     }
   }
 
-  getCurrentCoinReturnMessage(coins: CoinType[]): string {
-    switch (this.state) {
-      case PRICE_STATE:
-        return `RETURN COIN $${(
-          ChangeService.computeCoinsAmount(coins) / 100
-        ).toFixed(2)}`;
-      default:
-        return '';
-    }
+  getCoinsAmountString(coins: CoinType[]): string {
+    return `${(ChangeService.computeCoinsAmount(coins) / 100).toFixed(2)}`;
   }
 }

@@ -1,81 +1,68 @@
-import {
-  DISPLAY_AMOUNT_STATE,
-  DisplayStateMachine,
-  INSERT_COIN_STATE,
-  PRICE_STATE,
-  THANK_YOU_STATE,
-} from '../../../src/domain/entities/DisplayStateMachine';
 import {CoinType} from '../../../src/domain/models/Coin';
+import {
+  DisplayStateMachine,
+  IDLE_STATE,
+  INSERT_COIN_STATE,
+  DISPLAY_BALANCE_STATE,
+  SELECT_PRODUCT_STATE,
+  SHOW_PRICE_STATE,
+} from '../../../src/domain/entities/DisplayStateMachine';
 
 describe('DisplayStateMachine', () => {
-  test('should return an empty string when the state is not PRICE', () => {
-    const coins: CoinType[] = ['QUARTER', 'DIME', 'NICKEL'];
-    const displayStateMachine = new DisplayStateMachine();
-    const result = displayStateMachine.getCurrentCoinReturnMessage(coins);
-    expect(result).toBe('');
+  let displayStateMachine: DisplayStateMachine;
+
+  beforeEach(() => {
+    displayStateMachine = new DisplayStateMachine();
   });
 
-  test('should return the correct coin return message when the state is PRICE', () => {
-    const coins: CoinType[] = ['QUARTER', 'DIME', 'NICKEL'];
-    const displayStateMachine = new DisplayStateMachine();
-    displayStateMachine.setState('PRICE');
-    const result = displayStateMachine.getCurrentCoinReturnMessage(coins);
-    const expected = 'RETURN COIN $0.40';
-    expect(result).toBe(expected);
-  });
-  test('should return an empty string when the state is not PRICE', () => {
-    const displayStateMachine = new DisplayStateMachine();
-    const coins: CoinType[] = ['QUARTER', 'DIME', 'NICKEL'];
-    const result = displayStateMachine.getCurrentCoinReturnMessage(coins);
-    expect(result).toBe('');
+  it('should set the state correctly', () => {
+    const newState = INSERT_COIN_STATE;
+    displayStateMachine.setState(newState);
+    expect(displayStateMachine.getState()).toBe(newState);
   });
 
-  test('should return the correct coin return message when the state is PRICE', () => {
-    const displayStateMachine = new DisplayStateMachine();
-    displayStateMachine.setState(PRICE_STATE);
-    const coins: CoinType[] = ['QUARTER', 'DIME', 'NICKEL'];
-    const result = displayStateMachine.getCurrentCoinReturnMessage(coins);
-    const expected = 'RETURN COIN $0.40';
-    expect(result).toBe(expected);
-  });
-
-  test('should return "INSERT COIN" when the state is INSERT_COIN', () => {
-    const displayStateMachine = new DisplayStateMachine();
+  it('should return the correct message for INSERT_COIN_STATE', () => {
     displayStateMachine.setState(INSERT_COIN_STATE);
-    const currentBalance = 0;
-    const result = displayStateMachine.getMessage(currentBalance);
-    expect(result).toBe('INSERT COIN');
+    expect(displayStateMachine.getMessage(0, [])).toBe('INSERT COIN');
   });
 
-  test('should return the current balance in dollars when the state is DISPLAY_AMOUNT', () => {
-    const displayStateMachine = new DisplayStateMachine();
-    displayStateMachine.setState(DISPLAY_AMOUNT_STATE);
-    const currentBalance = 500; // $5.00
-    const result = displayStateMachine.getMessage(currentBalance);
-    expect(result).toBe('BALANCE $5.00');
+  it('should return the correct message for DISPLAY_BALANCE_STATE', () => {
+    const currentBalance = 500;
+    displayStateMachine.setState(DISPLAY_BALANCE_STATE);
+    expect(displayStateMachine.getMessage(currentBalance, [])).toBe(
+      'BALANCE $5.00'
+    );
   });
 
-  test('should return "THANK YOU" when the state is THANK_YOU', () => {
-    const displayStateMachine = new DisplayStateMachine();
-    displayStateMachine.setState(THANK_YOU_STATE);
-    const currentBalance = 0;
-    const result = displayStateMachine.getMessage(currentBalance);
-    expect(result).toBe('THANK YOU');
+  it('should return the correct message for SELECT_PRODUCT_STATE', () => {
+    const coinReturn: CoinType[] = ['QUARTER', 'DIME'];
+    displayStateMachine.setState(SELECT_PRODUCT_STATE);
+    expect(displayStateMachine.getMessage(0, coinReturn)).toBe(
+      'THANK YOU. Coin return : $0.35 (QUARTER,DIME)'
+    );
   });
 
-  test('should return the price of the product in dollars when the state is PRICE', () => {
-    const displayStateMachine = new DisplayStateMachine();
-    displayStateMachine.setState(PRICE_STATE);
-    const currentBalance = 0;
-    const price = 200; // $2.00
-    const result = displayStateMachine.getMessage(currentBalance, price);
-    expect(result).toBe('PRICE $2.00');
+  it('should return the correct message for SHOW_PRICE_STATE', () => {
+    const productPrice = 200;
+    const anyBalanceAmount = 0;
+    const anyCoinReturn: CoinType[] = [];
+    displayStateMachine.setState(SHOW_PRICE_STATE);
+    expect(
+      displayStateMachine.getMessage(
+        anyBalanceAmount,
+        anyCoinReturn,
+        productPrice
+      )
+    ).toBe('PRICE $2.00');
   });
 
-  test('should return "INSERT COIN" by default', () => {
-    const displayStateMachine = new DisplayStateMachine();
-    const currentBalance = 0;
-    const result = displayStateMachine.getMessage(currentBalance);
-    expect(result).toBe('INSERT COIN');
+  it('should return the default message for unknown state', () => {
+    displayStateMachine.setState(IDLE_STATE);
+    expect(displayStateMachine.getMessage(0, [])).toBe('INSERT COIN');
+  });
+
+  it('should return the correct coins amount string', () => {
+    const coins: CoinType[] = ['QUARTER', 'DIME', 'NICKEL'];
+    expect(displayStateMachine.getCoinsAmountString(coins)).toBe('0.40');
   });
 });

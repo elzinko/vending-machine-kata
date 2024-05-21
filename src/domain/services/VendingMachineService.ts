@@ -1,10 +1,11 @@
 import {VendingMachineInterface} from '../../interfaces/VendingMachineInterface';
 import {
-  DISPLAY_AMOUNT_STATE,
+  DISPLAY_BALANCE_STATE,
   DisplayStateMachine,
   INSERT_COIN_STATE,
-  PRICE_STATE,
-  THANK_YOU_STATE,
+  SHOW_PRICE_STATE,
+  SELECT_PRODUCT_STATE,
+  IDLE_STATE,
 } from '../entities/DisplayStateMachine';
 import {
   AllowedCoins,
@@ -24,16 +25,20 @@ export class VendingMachineService implements VendingMachineInterface {
   private displayStateMachine: DisplayStateMachine = new DisplayStateMachine();
   private selectedProduct?: ProductType;
 
-  insertCoin(coin: CoinType): void {
-    if (coin in CoinValues) {
-      this.balance += CoinValues[coin as AllowedCoins];
-      this.displayStateMachine.setState(DISPLAY_AMOUNT_STATE);
-    } else {
-      this.coinReturn.push(coin);
+  insertCoin(coin: CoinType): string {
+    {
+      if (coin in CoinValues) {
+        this.balance += CoinValues[coin as AllowedCoins];
+        this.displayStateMachine.setState(DISPLAY_BALANCE_STATE);
+      } else {
+        this.coinReturn.push(coin);
+        this.displayStateMachine.setState(IDLE_STATE);
+      }
+      return this.getDisplayMessage();
     }
   }
 
-  selectProduct(product: ProductType): void {
+  selectProduct(product: ProductType): string {
     this.selectedProduct = product;
     if (this.balance >= ProductPrices[product]) {
       this.balance -= ProductPrices[product];
@@ -42,23 +47,27 @@ export class VendingMachineService implements VendingMachineInterface {
         allowedCoinsTypes
       );
       this.balance = 0;
-      this.displayStateMachine.setState(THANK_YOU_STATE);
+      this.displayStateMachine.setState(SELECT_PRODUCT_STATE);
     } else {
-      this.displayStateMachine.setState(PRICE_STATE);
+      this.displayStateMachine.setState(SHOW_PRICE_STATE);
     }
+    return this.getDisplayMessage();
   }
 
   getDisplayMessage(): string {
-    const price =
-      this.displayStateMachine.getState() === PRICE_STATE
-        ? this.getSelectedProductPrice()
-        : undefined;
-    return this.displayStateMachine.getMessage(this.balance, price);
+    const selectedProductPrice = this.getSelectedProductPrice()
+      ? this.getSelectedProductPrice()
+      : undefined;
+    return this.displayStateMachine.getMessage(
+      this.balance,
+      this.coinReturn,
+      selectedProductPrice
+    );
   }
 
   resetDisplay(): void {
     if (this.balance > 0) {
-      this.displayStateMachine.setState(DISPLAY_AMOUNT_STATE);
+      this.displayStateMachine.setState(DISPLAY_BALANCE_STATE);
     } else {
       this.displayStateMachine.setState(INSERT_COIN_STATE);
     }
