@@ -63,11 +63,9 @@ npm run compile && npm run start
 
 ## 3 - select product
 
-Here is the feature to add : 
-```
-As a vendor
-I want customers to select products
-So that I can give them an incentive to put money in the machine
-```
+Feature is defined [here](https://github.com/guyroyse/vending-machine-kata?tab=readme-ov-file#make-change)
 
+## 4 - Make change
 
+Feature is defined [here](https://github.com/guyroyse/vending-machine-kata?tab=readme-ov-file#make-change)
+- I started to create a new change service in the domain

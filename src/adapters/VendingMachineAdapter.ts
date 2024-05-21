@@ -10,20 +10,10 @@ export class VendingMachineAdapter {
   ) {}
 
   insertCoinAndGetDisplay(coin: CoinType): string {
-    this.insertCoin.execute(coin);
-    return this.getDisplayMessage();
+    return this.insertCoin.execute(coin);
   }
 
   selectProductAndGetDisplay(product: ProductType): string {
-    this.selectProduct.execute(product);
-    return this.getDisplayMessage();
-  }
-
-  getDisplayMessage(): string {
-    return this.selectProduct.getDisplayMessage();
-  }
-
-  resetDisplay(): void {
-    this.selectProduct.resetDisplay();
+    return this.selectProduct.execute(product);
   }
 }

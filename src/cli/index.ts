@@ -3,7 +3,6 @@ import {InsertCoin} from '../usecases/InsertCoin';
 import {VendingMachineAdapter} from '../adapters/VendingMachineAdapter';
 import * as readlineSync from 'readline-sync';
 import {SelectProduct} from '../usecases/SelectProduct';
-import { DisplayStateMachine } from '../domain/entities/DisplayStateMachine';
 
 const vendingMachineService = new VendingMachineService();
 const insertCoinUseCase = new InsertCoin(vendingMachineService);
@@ -22,7 +21,6 @@ function showMenu() {
   console.log('5. Select Cola ($1.00)');
   console.log('6. Select Chips ($0.50)');
   console.log('7. Select Candy ($0.65)');
-  console.log('8. Check display');
   console.log('0. Exit\n');
 }
 
@@ -32,40 +30,30 @@ function handleUserInput(choice: number) {
     case 1:
       display = vendingMachineAdapter.insertCoinAndGetDisplay('PENNY');
       console.log('Penny inserted.');
-      console.log(display);
       break;
     case 2:
       display = vendingMachineAdapter.insertCoinAndGetDisplay('NICKEL');
       console.log('Nickel inserted.');
-      console.log(display);
       break;
     case 3:
       display = vendingMachineAdapter.insertCoinAndGetDisplay('DIME');
       console.log('Dime inserted.');
-      console.log(display);
       break;
     case 4:
       display = vendingMachineAdapter.insertCoinAndGetDisplay('QUARTER');
       console.log('Quarter inserted.');
-      console.log(display);
       break;
     case 5:
       display = vendingMachineAdapter.selectProductAndGetDisplay('COLA');
       console.log('Cola selected.');
-      console.log(display);
       break;
     case 6:
       display = vendingMachineAdapter.selectProductAndGetDisplay('CHIPS');
       console.log('Chips selected.');
-      console.log(display);
       break;
     case 7:
       display = vendingMachineAdapter.selectProductAndGetDisplay('CANDY');
       console.log('Candy selected.');
-      console.log(display);
-      break;
-    case 8:
-      console.log(vendingMachineAdapter.getDisplayMessage());
       break;
     case 0:
       console.log('Goodbye!');
@@ -75,6 +63,8 @@ function handleUserInput(choice: number) {
       console.log('Invalid choice. Please try again.');
       return;
   }
+
+  console.log(display);
 }
 
 let running = true;
@@ -84,7 +74,6 @@ while (running) {
   showMenu();
   const choice = readlineSync.questionInt('Choose an action: ');
   handleUserInput(choice);
-  vendingMachineAdapter.getDisplayMessage();
 }
 
 console.log('Program terminated.');

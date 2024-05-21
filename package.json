@@ -13,6 +13,7 @@
     "start": "node build/src/cli/index.js",
     "test": "jest",
     "fix": "gts fix",
+    "coverage": "jest --coverage",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
     "posttest": "npm run lint"
@@ -27,6 +28,6 @@
     "gts": "^5.3.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2",
-    "typescript": "~5.4.5"
+    "typescript": "~5.1.3"
   }
 }
